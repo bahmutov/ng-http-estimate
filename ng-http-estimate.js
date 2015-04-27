@@ -2,6 +2,11 @@
 
   var estimates = {};
 
+  function getEstimateScope() {
+    var s = angular.element(document.querySelector('http-estimate')).isolateScope();
+    return s;
+  }
+
   angular.module('http-estimate', [])
     .config(['$provide', function ($provide) {
       $provide.decorator('$http', ['$delegate', function ($delegate) {
@@ -10,7 +15,7 @@
         $delegate.get = function (url) {
           console.log('http.get', arguments);
           if (estimates[url]) {
-            var s = angular.element(document.querySelector('http-estimate')).isolateScope();
+            var s = getEstimateScope();
             if (s) {
               s.$broadcast('estimate', estimates[url]);
             }
@@ -22,6 +27,12 @@
               var finished = Number(new Date());
               console.log('took', finished - started);
               estimates[url] = finished - started;
+
+              var s = getEstimateScope();
+              if (s) {
+                s.$broadcast('finished');
+              }
+
               return this;
             });
         };
@@ -32,12 +43,36 @@
       return {
         restrict: 'E',
         scope: {},
-        template: '<div>{{ timeRemaining }}</div>',
-        controller: ['$scope', function ($scope) {
-          $scope.$on('estimate', function (event, data) {
-            console.log('received new estimate', data, 'ms');
-            $scope.timeRemaining = Math.round(data / 1000) + ' seconds';
+        template: '<div id="http-estimate" ng-show="running" ng-class="{ overdue: overdue }">{{ timeRemaining }}</div>',
+        controller: ['$scope', '$interval', function ($scope, $interval) {
+
+          $scope.running = false;
+
+          $scope.$on('estimate', function (event, remaining) {
+            console.log('received new estimate', remaining, 'ms');
+            $scope.running = true;
+            $scope.overdue = false;
+            $scope.timeRemaining = Math.round(remaining / 1000) + ' seconds';
+
+            var stop = $interval(function () {
+              if (!$scope.running && stop) {
+                $interval.cancel(stop);
+                stop = undefined;
+              } else {
+                // TODO use finish time, because interval might not be exactly 1 second
+                remaining -= 1000;
+                $scope.timeRemaining = Math.round(remaining / 1000) + ' seconds';
+                if (remaining < 0) {
+                  $scope.overdue = true;
+                }
+              }
+            }, 1000);
           });
+
+          $scope.$on('finished', function () {
+            $scope.running = false;
+          });
+
         }]
       };
     });

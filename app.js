@@ -12,6 +12,7 @@ angular.module('demo', ['http-estimate', 'ngMockE2E'])
           setTimeout(function() {
             // return result to the client AFTER delay
             callback.apply(_this, _arguments);
+            DELAY_MS += 1000;
           }, delay);
         };
         return $delegate.call(this, method, url, data, interceptor, headers);
@@ -33,6 +34,7 @@ angular.module('demo', ['http-estimate', 'ngMockE2E'])
 
     $scope.fetchNames = function fetchNames() {
       $scope.loading = true;
+      $scope.names = [];
       $http.get('/api/names')
         .then(function (response) {
           $scope.names = response.data.names;
