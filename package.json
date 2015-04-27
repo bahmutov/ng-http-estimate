@@ -1,0 +1,40 @@
+{
+  "name": "ng-http-estimate",
+  "version": "0.1.0",
+  "description": "Automatic $http request time estimates",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bahmutov/ng-http-estimate.git"
+  },
+  "keywords": [
+    "angular",
+    "$http",
+    "http",
+    "request",
+    "time",
+    "estimate",
+    "estimation"
+  ],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bahmutov/ng-http-estimate/issues"
+  },
+  "homepage": "https://github.com/bahmutov/ng-http-estimate",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-gh-pages": "~0.9.0",
+    "grunt-html2js": "~0.2.4",
+    "grunt-npm2bower-sync": "0.8.1",
+    "matchdep": "~0.3.0"
+  }
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+
+  <title>ng-http-estimate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <!-- this page is intended to run from dist/ folder -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+
+  <script src="ng-http-estimate.js"></script>
+
+  <script>
+  angular.module('demo', ['http-estimate', 'ngMockE2E'])
+    .config(function ($provide) {
+      // delay mock backend responses by 1 second
+      var DELAY_MS = 1000;
+      $provide.decorator('$httpBackend', function ($delegate) {
+        var proxy = function(method, url, data, callback, headers) {
+          var interceptor = function() {
+            var _this = this, _arguments = arguments;
+            var delay = typeof arguments[1] === 'object' &&
+              Array.isArray(arguments[1].names) ? DELAY_MS * arguments[1].names.length : 0;
+
+            setTimeout(function() {
+              // return result to the client AFTER delay
+              callback.apply(_this, _arguments);
+            }, delay);
+          };
+          return $delegate.call(this, method, url, data, interceptor, headers);
+        };
+        for(var key in $delegate) {
+          proxy[key] = $delegate[key];
+        }
+        return proxy;
+      });
+    })
+    .run(function ($httpBackend) {
+      $httpBackend.whenGET('/api/names')
+        .respond({
+          names: ['joe', 'john', 'adam']
+        });
+    })
+    .controller('demoController', function ($scope, $http) {
+      $scope.names = [];
+      $scope.loading = true;
+      $http.get('/api/names')
+        .success(function (data) {
+          $scope.names = data.names;
+        })
+        .finally(function () {
+          $scope.loading = false;
+        });
+    });
+  </script>
+</head>
+<body>
+  <h1>ng-http-estimate</h1>
+
+  <div ng-app="demo" ng-controller="demoController">
+    <h2>Fetched names <i ng-show="loading" class="fa fa-spinner fa-pulse"></i></h2>
+    <ul>
+      <li ng-repeat="name in names">{{ name }}</li>
+    </ul>
+  </div>
+
+</body>
+</html>

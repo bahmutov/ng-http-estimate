@@ -1,0 +1,34 @@
+{
+  "name": "ng-http-estimate",
+  "version": "0.1.0",
+  "homepage": "https://github.com/bahmutov/ng-http-estimate",
+  "authors": [
+    "Gleb Bahmutov <gleb.bahmutov@gmail.com>"
+  ],
+  "description": "Automatic $http request time estimates",
+  "main": "index.html",
+  "keywords": [
+    "angular",
+    "$http",
+    "http",
+    "request",
+    "time",
+    "estimate",
+    "estimation"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.15",
+    "angular-mocks": "~1.3.15"
+  },
+  "resolutions": {
+    "angular": "1.3.15"
+  }
+}
