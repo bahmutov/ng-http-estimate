@@ -1,5 +1,6 @@
 (function app(angular) {
 
+  var namesUrl = '/api/names';
   var names = ['joe', 'john', 'adam'];
 
   angular.module('demo', ['http-estimate', 'ngMockE2E'])
@@ -47,13 +48,13 @@
           names: names
         });
     })
-    .controller('demoController', function ($scope, $http, $timeout) {
+    .controller('demoController', function ($scope, $http, $timeout, httpEstimateLowLevel) {
       $scope.names = [];
 
       $scope.fetchNames = function fetchNames() {
         $scope.loading = true;
         $scope.names = [];
-        $http.get('/api/names')
+        $http.get(namesUrl)
           .then(function (response) {
             $scope.names = response.data.names;
           })
@@ -66,12 +67,14 @@
         console.log('manual start load');
         $scope.loading = true;
         $scope.names = [];
+        httpEstimateLowLevel.start(namesUrl);
       };
 
       $scope.stopLoad = function stopLoad() {
         console.log('manual stop load');
         $scope.loading = false;
         $scope.names = names;
+        httpEstimateLowLevel.stop(namesUrl);
       };
 
       $timeout(function () {

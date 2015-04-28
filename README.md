@@ -58,6 +58,20 @@ completes. Useful to collect analytics how accurate the measurements were
 })
 ```
 
+* Low level interface. You can inject 'httpEstimateLowLevel' into your application and call
+the low-level methods `start(name)` and `stop(name)`.
+
+```js
+.controller('demoController', function ($scope, httpEstimateLowLevel) {
+  $scope.startLoad = function startLoad() {
+    httpEstimateLowLevel.start('/foo/bar');
+  };
+  $scope.stopLoad = function stopLoad() {
+    httpEstimateLowLevel.stop('/foo/bar');
+  };
+});
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &copy; 2015

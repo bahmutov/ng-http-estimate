@@ -2,6 +2,7 @@
 
   var STORE_NAME = 'http-estimate';
   var estimates = JSON.parse(localStorage.getItem(STORE_NAME) || '{}');
+  var startTimes = {}; // by name
 
   function getEstimateScope() {
     var el = angular.element(document.querySelector('http-estimate'));
@@ -49,39 +50,65 @@
     return estimates[url];
   }
 
-  function httpEstimateDecorator($delegate, $rootScope, config) {
+  function estimateRequest(config, name) {
+    var estimate;
+
+    if (typeof config.estimator === 'function') {
+      estimate = config.estimator(getCachedEstimate, name);
+    } else {
+      estimate = getCachedEstimate(name);
+    }
+    return estimate;
+  }
+
+  function httpEstimateDecorator($delegate, $rootScope, config, httpEstimateLowLevel) {
     var _get = $delegate.get;
 
     $delegate.get = function (url) {
-      var estimate;
-
-      if (typeof config.estimator === 'function') {
-        estimate = config.estimator(getCachedEstimate, url);
-      } else {
-        estimate = getCachedEstimate(url);
-      }
-      $rootScope.$broadcast('estimate', estimate);
-
-      var started = Number(new Date());
+      httpEstimateLowLevel.start(url);
       return _get.apply($delegate, arguments)
         .finally(function () {
-          var finished = Number(new Date());
-          var took = finished - started;
-          console.log('took', took);
-          estimates[url] = took;
-
-          $rootScope.$broadcast('finished');
-
-          localStorage.setItem(STORE_NAME, JSON.stringify(estimates));
-
-          if (typeof config.accuracy === 'function') {
-            config.accuracy(url, estimate, took);
-          }
-
+          httpEstimateLowLevel.stop(url);
           return this;
         });
     };
     return $delegate;
+  }
+
+  function httpEstimateLowLevel($rootScope, config) {
+    return {
+      start: function (name) {
+        if (!name || typeof name !== 'string') {
+          throw new Error('Expected request name, got ' + name);
+        }
+        console.log('low level start', name);
+        var estimate = estimateRequest(config, name);
+        console.log('low level estimate for', name, estimate);
+        $rootScope.$broadcast('estimate', estimate);
+        startTimes[name] = Number(new Date());
+      },
+      stop: function (name) {
+        if (!name || typeof name !== 'string') {
+          throw new Error('Expected request name, got ' + name);
+        }
+
+        console.log('low level stop', name);
+
+        $rootScope.$broadcast('finished');
+
+        if (startTimes[name]) {
+          var took = Number(new Date()) - startTimes[name];
+          console.log(name, 'took', took);
+
+          var previousEstimate = estimates[name];
+          estimates[name] = took;
+          localStorage.setItem(STORE_NAME, JSON.stringify(estimates));
+          if (typeof config.accuracy === 'function' && previousEstimate) {
+            config.accuracy(name, previousEstimate, took);
+          }
+        }
+      }
+    };
   }
 
   angular.module('http-estimate', [])
@@ -97,7 +124,7 @@
     })
     .config(['$provide', function ($provide) {
       $provide.decorator('$http', [
-        '$delegate', '$rootScope', 'httpEstimate', httpEstimateDecorator
+        '$delegate', '$rootScope', 'httpEstimate', 'httpEstimateLowLevel', httpEstimateDecorator
       ]);
     }])
     .provider('httpEstimate', function () {
@@ -115,6 +142,9 @@
           return config;
         }
       };
-    });
+    })
+    .service('httpEstimateLowLevel', [
+      '$rootScope', 'httpEstimate', httpEstimateLowLevel
+    ]);
 
 }(window.angular));
