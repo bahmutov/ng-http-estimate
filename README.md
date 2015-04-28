@@ -78,7 +78,7 @@ the low-level methods `start(name)` and `stop(name)`.
 });
 ```
 
-* verbose console log output for debugging.
+* Verbose console log output for debugging.
 
 ```js
 .config(function (httpEstimateProvider) {
@@ -87,6 +87,11 @@ the low-level methods `start(name)` and `stop(name)`.
   });
 })
 ```
+
+* Works fine with other $http interceptors, like [angular-loading-bar][angular-loading-bar],
+for example see the [accuracy example][accuracy].
+
+[angular-loading-bar]: http://chieffancypants.github.io/angular-loading-bar/
 
 ## Small print
 
