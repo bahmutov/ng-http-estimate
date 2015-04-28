@@ -10,12 +10,15 @@
     return s;
   }
 
-  function httpEstimateController($scope, $interval) {
+  function httpEstimateController($scope, $interval, config) {
     $scope.running = false;
 
     $scope.$on('estimate', function (event, remaining) {
       if (typeof remaining === 'number') {
-        console.log('received new estimate', remaining, 'ms');
+        if (config.verbose) {
+          console.log('received new estimate', remaining, 'ms');
+        }
+
         $scope.running = true;
         $scope.overdue = false;
         $scope.timeRemaining = Math.round(remaining / 1000) + ' seconds';
@@ -81,9 +84,16 @@
         if (!name || typeof name !== 'string') {
           throw new Error('Expected request name, got ' + name);
         }
-        console.log('low level start', name);
+        if (config.verbose) {
+          console.log('low level start', name);
+        }
+
         var estimate = estimateRequest(config, name);
-        console.log('low level estimate for', name, estimate);
+
+        if (config.verbose) {
+          console.log('low level estimate for', name, estimate);
+        }
+
         $rootScope.$broadcast('estimate', estimate);
         startTimes[name] = Number(new Date());
       },
@@ -92,13 +102,18 @@
           throw new Error('Expected request name, got ' + name);
         }
 
-        console.log('low level stop', name);
+        if (config.verbose) {
+          console.log('low level stop', name);
+        }
 
         $rootScope.$broadcast('finished');
 
         if (startTimes[name]) {
           var took = Number(new Date()) - startTimes[name];
-          console.log(name, 'took', took);
+
+          if (config.verbose) {
+            console.log(name, 'took', took);
+          }
 
           var previousEstimate = estimates[name];
           estimates[name] = took;
@@ -119,7 +134,7 @@
         template: '<div id="http-estimate" ng-show="running" ' +
           'ng-class="{ overdue: overdue }">{{ timeRemaining }} ' +
           '<i class="fa fa-spinner fa-pulse"></i></div>',
-        controller: ['$scope', '$interval', httpEstimateController]
+        controller: ['$scope', '$interval', 'httpEstimate', httpEstimateController]
       };
     })
     .config(['$provide', function ($provide) {
@@ -130,13 +145,15 @@
     .provider('httpEstimate', function () {
       var config = {
         estimator: undefined,
-        accuracy: undefined
+        accuracy: undefined,
+        verbose: false
       };
       return {
         set: function (options) {
           options = options || {};
           config.estimator = options.estimator || config.estimator;
           config.accuracy = options.accuracy || config.accuracy;
+          config.verbose = options.verbose || config.verbose;
         },
         $get: function () {
           return config;
