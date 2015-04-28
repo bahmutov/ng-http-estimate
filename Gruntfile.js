@@ -18,7 +18,9 @@ module.exports = function (grunt) {
       'screenshot.png',
       'README.md',
       'app.js',
-      'ng-http-estimate.js'
+      'ng-http-estimate.js',
+      'examples/**/*.html',
+      'examples/**/*.js'
     ]
   };
 

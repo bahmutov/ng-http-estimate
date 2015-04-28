@@ -4,16 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
 
-  <title>ng-http-estimate</title>
+  <title>ng-http-estimate basic example</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-  <!-- this page is intended to run from dist/ folder -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-mocks/angular-mocks.js"></script>
-  <script src="bower_components/momentjs/moment.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-mocks.js"></script>
 
-  <script src="ng-http-estimate.js"></script>
+  <script src="../../ng-http-estimate.js"></script>
   <script src="app.js"></script>
 
   <style>
@@ -38,32 +36,25 @@
   </style>
 </head>
 <body>
-  <h1>ng-http-estimate</h1>
+  <h1>ng-http-estimate basic example</h1>
 
-  <p>The list is fetched from the backend and the time estimate is shown.
-  The requests take progressively 3, 6, 9, ... seconds to test how the loading animation
-  handles the time overflow.</p>
+  <p>Loading a list of names takes 3 seconds.</p>
 
   <div ng-app="demo" ng-controller="demoController">
     <http-estimate></http-estimate>
 
     <button ng-click="fetchNames()" ng-disabled="loading">Load names</button>
-    or control the load request manually:
-    <button ng-click="startLoad()" ng-disabled="loading">Start load</button>
-    <button ng-click="stopLoad()" ng-disabled="!loading">Stop load</button>
-
     <h2>Fetched names</h2>
     <ul>
       <li ng-repeat="name in names">{{ name }}</li>
     </ul>
-
   </div>
 
-  <h3>Code</h3>
-  <a href="https://github.com/bahmutov/ng-http-estimate">bahmutov/ng-http-estimate</a>.
+  <h2>Code</h2>
+  <p>This example uses the default ng-http-estimate settings</p>
 
-  <h3>Other examples</h3>
-  <a href="examples/basic">basic</a>
+  <br>
+  <a href="https://github.com/bahmutov/ng-http-estimate">bahmutov/ng-http-estimate</a>
 
   <script src="https://rawgit.com/bahmutov/console-log-div/master/console-log-div.js"></script>
 </body>

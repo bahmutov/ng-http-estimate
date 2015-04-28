@@ -2,7 +2,10 @@
 
 > Automatic $http request time estimates
 
-[Demo](http://glebbahmutov.com/ng-http-estimate/)
+[Demo][demo, [basic example][basic]
+
+[demo]: http://glebbahmutov.com/ng-http-estimate/
+[basic]: http://glebbahmutov.com/ng-http-estimate/examples/basic
 
     npm|bower install ng-http-estimate
 
