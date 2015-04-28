@@ -48,6 +48,8 @@
     <http-estimate></http-estimate>
 
     <button ng-click="fetchNames()" ng-disabled="loading">Load names</button>
+    <button ng-click="fetchUseSuccessNames()" ng-disabled="loading">Load names (use .success)</button>
+    <br>
     or control the load request manually:
     <button ng-click="startLoad()" ng-disabled="loading">Start load</button>
     <button ng-click="stopLoad()" ng-disabled="!loading">Stop load</button>

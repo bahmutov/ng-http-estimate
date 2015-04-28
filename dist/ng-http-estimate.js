@@ -1,4 +1,5 @@
 (function httpEstimate(angular) {
+  'use strict';
 
   var STORE_NAME = 'http-estimate';
   var estimates = JSON.parse(localStorage.getItem(STORE_NAME) || '{}');
@@ -72,13 +73,14 @@
         httpEstimateLowLevel.start(url);
       }
 
-      return _get.apply($delegate, arguments)
-        .finally(function () {
-          if (config.interceptHttp) {
-            httpEstimateLowLevel.stop(url);
-          }
-          return this;
-        });
+      var p = _get.apply($delegate, arguments);
+      p.finally(function () {
+        if (config.interceptHttp) {
+          httpEstimateLowLevel.stop(url);
+        }
+        return p;
+      });
+      return p;
     };
     return $delegate;
   }

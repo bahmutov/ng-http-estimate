@@ -1,4 +1,5 @@
 (function app(angular) {
+  'use strict';
 
   var namesUrl = '/api/names';
   var names = ['joe', 'john', 'adam'];
@@ -57,6 +58,18 @@
         $http.get(namesUrl)
           .then(function (response) {
             $scope.names = response.data.names;
+          })
+          .finally(function () {
+            $scope.loading = false;
+          });
+      };
+
+      $scope.fetchUseSuccessNames = function fetchUseSuccessNames() {
+        $scope.loading = true;
+        $scope.names = [];
+        $http.get(namesUrl)
+          .success(function (data) {
+            $scope.names = data;
           })
           .finally(function () {
             $scope.loading = false;
