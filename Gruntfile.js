@@ -20,7 +20,8 @@ module.exports = function (grunt) {
       'app.js',
       'ng-http-estimate.js',
       'examples/**/*.html',
-      'examples/**/*.js'
+      'examples/**/*.js',
+      'examples/**/*.css'
     ]
   };
 

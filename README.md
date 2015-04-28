@@ -2,11 +2,13 @@
 
 > Automatic $http request time estimates
 
-[Demo][demo], [basic example][basic], [custom estimator][estimator]
+[Demo][demo], [basic example][basic], [custom estimator][estimator],
+[reporting accuracy][accuracy]
 
 [demo]: http://glebbahmutov.com/ng-http-estimate/
 [basic]: http://glebbahmutov.com/ng-http-estimate/examples/basic
 [estimator]: http://glebbahmutov.com/ng-http-estimate/examples/custom-estimator
+[accuracy]: http://glebbahmutov.com/ng-http-estimate/examples/accuracy
 
     npm|bower install ng-http-estimate
 
