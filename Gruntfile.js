@@ -9,7 +9,17 @@ module.exports = function (grunt) {
 
     app_files: {
       js: ['src/**/*.js']
-    }
+    },
+
+    demoFiles: [
+      'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'index.html',
+      'screenshot.png',
+      'README.md',
+      'app.js',
+      'ng-http-estimate.js'
+    ]
   };
 
   var taskConfig = {
@@ -24,15 +34,7 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            src: [
-              'bower_components/angular/angular.js',
-              'bower_components/angular-mocks/angular-mocks.js',
-              'index.html',
-              'screenshot.png',
-              'README.md',
-              'demo.js',
-              'ng-http-estimate.js'
-            ],
+            src: userConfig.demoFiles,
             dest: '<%= destination_dir %>'
           }
         ]
@@ -43,16 +45,7 @@ module.exports = function (grunt) {
       options: {
         base: '<%= destination_dir %>'
       },
-      src: [
-        'index.html',
-        'README.md',
-        'bower_components/angular/angular.js',
-        'bower_components/angular-mocks/angular-mocks.js',
-        'ng-http-estimate.js',
-        'screenshot.png',
-        'demo.js',
-        'ng-http-estimate.js'
-      ]
+      src: userConfig.demoFiles
     }
   };
   grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
