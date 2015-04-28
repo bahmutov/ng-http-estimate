@@ -68,10 +68,15 @@
     var _get = $delegate.get;
 
     $delegate.get = function (url) {
-      httpEstimateLowLevel.start(url);
+      if (config.interceptHttp) {
+        httpEstimateLowLevel.start(url);
+      }
+
       return _get.apply($delegate, arguments)
         .finally(function () {
-          httpEstimateLowLevel.stop(url);
+          if (config.interceptHttp) {
+            httpEstimateLowLevel.stop(url);
+          }
           return this;
         });
     };
@@ -146,7 +151,8 @@
       var config = {
         estimator: undefined,
         accuracy: undefined,
-        verbose: false
+        verbose: false,
+        interceptHttp: true
       };
       return {
         set: function (options) {
@@ -154,6 +160,7 @@
           config.estimator = options.estimator || config.estimator;
           config.accuracy = options.accuracy || config.accuracy;
           config.verbose = options.verbose || config.verbose;
+          config.interceptHttp = options.interceptHttp || config.interceptHttp;
         },
         $get: function () {
           return config;
