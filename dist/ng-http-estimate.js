@@ -1,6 +1,7 @@
-(function httpEstimat(angular) {
+(function httpEstimate(angular) {
 
-  var estimates = {};
+  var STORE_NAME = 'http-estimate';
+  var estimates = JSON.parse(localStorage.getItem(STORE_NAME) || '{}');
 
   function getEstimateScope() {
     var el = angular.element(document.querySelector('http-estimate'));
@@ -59,7 +60,6 @@
         var _get = $delegate.get;
 
         $delegate.get = function (url) {
-          console.log('http.get', arguments);
           $rootScope.$broadcast('estimate', estimates[url]);
 
           var started = Number(new Date());
@@ -70,6 +70,9 @@
               estimates[url] = finished - started;
 
               $rootScope.$broadcast('finished');
+
+              localStorage.setItem(STORE_NAME, JSON.stringify(estimates));
+
               return this;
             });
         };
