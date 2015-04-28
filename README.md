@@ -1,5 +1,22 @@
 # ng-http-estimate
 
+> Automatic $http request time estimates
+
+    npm|bower install ng-http-estimate
+
+Include 'ng-http-estimate.js' script in your page and add dependency on 'http-estimate'
+
+    angular.module('app', ['http-estimate']);
+
+Place the loading element into the body, you can also style it
+
+    <body>
+        <http-estimate></http-estimate>
+        ...
+    </body>
+
+
+
 ## Small print
 
 Author: Gleb Bahmutov &copy; 2015

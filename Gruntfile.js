@@ -28,21 +28,12 @@ module.exports = function (grunt) {
               'bower_components/angular/angular.js',
               'bower_components/angular-mocks/angular-mocks.js',
               'index.html',
+              'screenshot.png',
               'README.md'
             ],
             dest: '<%= destination_dir %>'
           }
         ]
-      }
-    },
-
-    watch: {
-      all: {
-        options: {
-          livereload: 35729
-        },
-        files: ['src/**/*.js', 'src/**/*.html', 'index.html'],
-        tasks: ['build']
       }
     },
 
@@ -55,7 +46,8 @@ module.exports = function (grunt) {
         'README.md',
         'bower_components/angular/angular.js',
         'bower_components/angular-mocks/angular-mocks.js',
-        'ng-http-estimate.js'
+        'ng-http-estimate.js',
+        'screenshot.png'
       ]
     }
   };

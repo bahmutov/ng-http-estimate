@@ -38,15 +38,23 @@
 <body>
   <h1>ng-http-estimate</h1>
 
+  <p>The list is fetched from the backend and the time estimate is shown.
+  The requests take progressively 3, 6, 9, ... seconds to test how the loading animation
+  handles the time overflow.</p>
+
   <div ng-app="demo" ng-controller="demoController">
-    <button ng-click="fetchNames()">Load names</button>
-    <h2>Fetched names <i ng-show="loading" class="fa fa-spinner fa-pulse"></i></h2>
+    <http-estimate></http-estimate>
+
+    <button ng-click="fetchNames()" ng-disabled="loading">Load names</button>
+    <h2>Fetched names</h2>
     <ul>
       <li ng-repeat="name in names">{{ name }}</li>
     </ul>
 
-    <http-estimate />
   </div>
+
+  <h2>Code</h2>
+  <a href="https://github.com/bahmutov/ng-http-estimate">bahmutov/ng-http-estimate</a>
 
 </body>
 </html>

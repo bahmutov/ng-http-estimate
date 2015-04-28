@@ -29,7 +29,7 @@ angular.module('demo', ['http-estimate', 'ngMockE2E'])
         names: ['joe', 'john', 'adam']
       });
   })
-  .controller('demoController', function ($scope, $http) {
+  .controller('demoController', function ($scope, $http, $timeout) {
     $scope.names = [];
 
     $scope.fetchNames = function fetchNames() {
@@ -44,5 +44,7 @@ angular.module('demo', ['http-estimate', 'ngMockE2E'])
         });
     };
 
-    $scope.fetchNames();
+    $timeout(function () {
+      $scope.fetchNames();
+    });
   });
