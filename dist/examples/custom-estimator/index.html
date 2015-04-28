@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+
+  <title>ng-http-estimate custom estimator example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-mocks.js"></script>
+
+  <script src="../../ng-http-estimate.js"></script>
+  <script src="app.js"></script>
+
+  <style>
+    #http-estimate {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      height: 30px;
+      line-height: 30px;
+      margin: -15px 0 0 -100px;
+      border: 2px solid black;
+      border-radius: 4px;
+      text-align: center;
+      background: white;
+      box-shadow: 8px 15px rgba(25, 25, 25, 0.5);
+    }
+    .overdue {
+      color: red;
+      font-weight: bold;
+    }
+
+    #app {
+      margin: 10px 0px;
+      display: block;
+      white-space: pre;
+      font-family: monospace;
+      background-color: #eee;
+    }
+    #app:before {
+      content: "app code:";
+      font-style: italic;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>ng-http-estimate with custom estimator example</h1>
+
+  <p>Loading a list of names takes 3 seconds, and the user code is given a chance to estimate it.</p>
+
+  <div ng-app="demo" ng-controller="demoController">
+    <http-estimate></http-estimate>
+
+    <button ng-click="fetchNames()" ng-disabled="loading">Load names</button>
+    <h2>Fetched names</h2>
+    <ul>
+      <li ng-repeat="name in names">{{ name }}</li>
+    </ul>
+  </div>
+
+  <script id="app">
+    angular.module('demo')
+      .config(function (httpEstimateProvider) {
+        httpEstimateProvider.set({
+          estimator: function (cacheEstimator, url) {
+            console.log('need to estimate how long get request to', url, 'would take');
+            var estimate = cacheEstimator(url);
+            console.log('built-in cache estimator says', estimate);
+            console.log('will trust it');
+            return estimate;
+          }
+        });
+      });
+  </script>
+
+  <script src="https://rawgit.com/bahmutov/console-log-div/master/console-log-div.js"></script>
+</body>
+</html>
