@@ -78,6 +78,16 @@ the low-level methods `start(name)` and `stop(name)`.
 });
 ```
 
+* verbose console log output for debugging.
+
+```js
+.config(function (httpEstimateProvider) {
+  httpEstimateProvider.set({
+    verbose: true
+  });
+})
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &copy; 2015
