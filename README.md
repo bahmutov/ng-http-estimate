@@ -24,7 +24,23 @@ time (if previously computed) or "loading ..." message.
 
 ## Features
 
-* Measurements are saved in the local storage
+* Measurements are saved in the local storage.
+* You can pass your own estimator function via config provider. The function can
+use built-in estimator and should return the wait time in milliseconds. For example:
+
+```js
+.config(function (httpEstimateProvider) {
+  httpEstimateProvider.set({
+    estimator: function (cacheEstimator, url) {
+      console.log('need to estimate how long get request to', url, 'would take');
+      var estimate = cacheEstimator(url);
+      console.log('built-in cache estimator says', estimate);
+      console.log('will trust it');
+      return estimate;
+    }
+  });
+})
+```
 
 ## Small print
 
