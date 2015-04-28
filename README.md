@@ -2,6 +2,8 @@
 
 > Automatic $http request time estimates
 
+[Demo](http://glebbahmutov.com/ng-http-estimate/)
+
     npm|bower install ng-http-estimate
 
 Include 'ng-http-estimate.js' script in your page and add dependency on 'http-estimate'
@@ -19,6 +21,42 @@ The element will appear automatically on HTML requests and will show estimated r
 time (if previously computed) or "loading ..." message.
 
 ![screenshot](screenshot.png)
+
+## Features
+
+* Measurements are saved in the local storage.
+* You can pass your own estimator function via config provider. The function can
+use built-in estimator and should return the wait time in milliseconds. For example:
+
+```js
+.config(function (httpEstimateProvider) {
+  httpEstimateProvider.set({
+    estimator: function (cacheEstimator, url) {
+      console.log('need to estimate how long get request to', url, 'would take');
+      var estimate = cacheEstimator(url);
+      console.log('built-in cache estimator says', estimate);
+      console.log('will trust it');
+      return estimate;
+    }
+  });
+})
+```
+
+* You can pass 'accuracy' function via config provider to receive result after a request
+completes. Useful to collect analytics how accurate the measurements were
+
+```js
+.config(function (httpEstimateProvider) {
+  httpEstimateProvider.set({
+    estimator: function (cacheEstimator, url) {
+      ...
+    },
+    accuracy: function (url, estimate, took) {
+      console.log('estimated request to', url, 'to take', estimate, 'took', took, 'ms');
+    }
+  });
+})
+```
 
 ## Small print
 

@@ -1,4 +1,18 @@
 angular.module('demo', ['http-estimate', 'ngMockE2E'])
+  .config(function (httpEstimateProvider) {
+    httpEstimateProvider.set({
+      estimator: function (cacheEstimator, url) {
+        console.log('need to estimate how long get request to', url, 'would take');
+        var estimate = cacheEstimator(url);
+        console.log('built-in cache estimator says', estimate);
+        console.log('will trust it');
+        return estimate;
+      },
+      accuracy: function (url, estimate, took) {
+        console.log('estimated request to', url, 'to take', estimate, 'took', took, 'ms');
+      }
+    });
+  })
   .config(function ($provide) {
     // delay mock backend responses by 1 second
     var DELAY_MS = 1000;
