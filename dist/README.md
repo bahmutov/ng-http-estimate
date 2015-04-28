@@ -15,7 +15,10 @@ Place the loading element into the body, you can also style it
         ...
     </body>
 
+The element will appear automatically on HTML requests and will show estimated remaining
+time (if previously computed) or "loading ..." message.
 
+![screenshot](screenshot.png)
 
 ## Small print
 

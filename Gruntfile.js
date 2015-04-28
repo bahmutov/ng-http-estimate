@@ -29,7 +29,9 @@ module.exports = function (grunt) {
               'bower_components/angular-mocks/angular-mocks.js',
               'index.html',
               'screenshot.png',
-              'README.md'
+              'README.md',
+              'demo.js',
+              'ng-http-estimate.js'
             ],
             dest: '<%= destination_dir %>'
           }
@@ -47,7 +49,9 @@ module.exports = function (grunt) {
         'bower_components/angular/angular.js',
         'bower_components/angular-mocks/angular-mocks.js',
         'ng-http-estimate.js',
-        'screenshot.png'
+        'screenshot.png',
+        'demo.js',
+        'ng-http-estimate.js'
       ]
     }
   };
