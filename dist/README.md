@@ -2,6 +2,8 @@
 
 > Automatic $http request time estimates
 
+[Demo](http://glebbahmutov.com/ng-http-estimate/)
+
     npm|bower install ng-http-estimate
 
 Include 'ng-http-estimate.js' script in your page and add dependency on 'http-estimate'
