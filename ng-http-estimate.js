@@ -66,12 +66,17 @@
       return _get.apply($delegate, arguments)
         .finally(function () {
           var finished = Number(new Date());
-          console.log('took', finished - started);
-          estimates[url] = finished - started;
+          var took = finished - started;
+          console.log('took', took);
+          estimates[url] = took;
 
           $rootScope.$broadcast('finished');
 
           localStorage.setItem(STORE_NAME, JSON.stringify(estimates));
+
+          if (typeof config.accuracy === 'function') {
+            config.accuracy(url, estimate, took);
+          }
 
           return this;
         });

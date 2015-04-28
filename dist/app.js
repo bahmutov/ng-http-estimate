@@ -7,6 +7,9 @@ angular.module('demo', ['http-estimate', 'ngMockE2E'])
         console.log('built-in cache estimator says', estimate);
         console.log('will trust it');
         return estimate;
+      },
+      accuracy: function (url, estimate, took) {
+        console.log('estimated request to', url, 'to take', estimate, 'took', took, 'ms');
       }
     });
   })

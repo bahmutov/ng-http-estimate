@@ -42,6 +42,22 @@ use built-in estimator and should return the wait time in milliseconds. For exam
 })
 ```
 
+* You can pass 'accuracy' function via config provider to receive result after a request
+completes. Useful to collect analytics how accurate the measurements were
+
+```js
+.config(function (httpEstimateProvider) {
+  httpEstimateProvider.set({
+    estimator: function (cacheEstimator, url) {
+      ...
+    },
+    accuracy: function (url, estimate, took) {
+      console.log('estimated request to', url, 'to take', estimate, 'took', took, 'ms');
+    }
+  });
+})
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &copy; 2015
