@@ -22,6 +22,10 @@ time (if previously computed) or "loading ..." message.
 
 ![screenshot](screenshot.png)
 
+## Features
+
+* Measurements are saved in the local storage
+
 ## Small print
 
 Author: Gleb Bahmutov &copy; 2015
