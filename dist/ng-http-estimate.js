@@ -162,7 +162,8 @@
           config.estimator = options.estimator || config.estimator;
           config.accuracy = options.accuracy || config.accuracy;
           config.verbose = options.verbose || config.verbose;
-          config.interceptHttp = options.interceptHttp || config.interceptHttp;
+          config.interceptHttp = typeof options.interceptHttp !== 'undefined' ?
+            options.interceptHttp : config.interceptHttp;
         },
         $get: function () {
           return config;
