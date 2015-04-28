@@ -3,12 +3,13 @@
 > Automatic $http request time estimates
 
 [Demo][demo], [basic example][basic], [custom estimator][estimator],
-[reporting accuracy][accuracy]
+[reporting accuracy][accuracy], [low-level][low-level]
 
 [demo]: http://glebbahmutov.com/ng-http-estimate/
 [basic]: http://glebbahmutov.com/ng-http-estimate/examples/basic
 [estimator]: http://glebbahmutov.com/ng-http-estimate/examples/custom-estimator
 [accuracy]: http://glebbahmutov.com/ng-http-estimate/examples/accuracy
+[low-level]: http://glebbahmutov.com/ng-http-estimate/examples/low-level
 
     npm|bower install ng-http-estimate
 
@@ -31,6 +32,17 @@ time (if previously computed) or "loading ..." message.
 ## Features
 
 * Measurements are saved in the local storage.
+* The $http requests are automatically intercepted. If you want to disable intercept and
+control the start / stop events, use config provider
+
+```js
+.config(function (httpEstimateProvider) {
+  httpEstimateProvider.set({
+    interceptHttp: false
+  });
+})
+```
+
 * You can pass your own estimator function via config provider. The function can
 use built-in estimator and should return the wait time in milliseconds. For example:
 
@@ -65,7 +77,8 @@ completes. Useful to collect analytics how accurate the measurements were
 ```
 
 * Low level interface. You can inject 'httpEstimateLowLevel' into your application and call
-the low-level methods `start(name)` and `stop(name)`.
+the low-level methods `start(name)` and `stop(name)`. Great for custom duration estimation with
+http intercepts disabled.
 
 ```js
 .controller('demoController', function ($scope, httpEstimateLowLevel) {
@@ -77,6 +90,21 @@ the low-level methods `start(name)` and `stop(name)`.
   };
 });
 ```
+
+* Verbose console log output for debugging.
+
+```js
+.config(function (httpEstimateProvider) {
+  httpEstimateProvider.set({
+    verbose: true
+  });
+})
+```
+
+* Works fine with other $http interceptors, like [angular-loading-bar][angular-loading-bar],
+for example see the [accuracy example][accuracy].
+
+[angular-loading-bar]: http://chieffancypants.github.io/angular-loading-bar/
 
 ## Small print
 

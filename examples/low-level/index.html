@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+
+  <title>ng-http-estimate low-level example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-mocks.js"></script>
+
+  <script src="../../ng-http-estimate.js"></script>
+  <script src="app.js"></script>
+
+  <style>
+    #http-estimate {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      height: 30px;
+      line-height: 30px;
+      margin: -15px 0 0 -100px;
+      border: 2px solid black;
+      border-radius: 4px;
+      text-align: center;
+      background: white;
+      box-shadow: 8px 15px rgba(25, 25, 25, 0.5);
+    }
+    .overdue {
+      color: red;
+      font-weight: bold;
+    }
+
+    #app {
+      margin: 10px 0px;
+      display: block;
+      white-space: pre;
+      font-family: monospace;
+      background-color: #eee;
+    }
+    #app:before {
+      content: "app code:";
+      font-style: italic;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>ng-http-estimate low-level example</h1>
+
+  <p>Loading a list of names takes 3 seconds. The automatic $http intercept has been disabled,
+  instead the application code calls start and stop methods.</p>
+
+  <div ng-app="demo" ng-controller="demoController">
+    <http-estimate></http-estimate>
+
+    <button ng-click="startLoad()" ng-disabled="loading">Start load</button>
+    <button ng-click="stopLoad()" ng-disabled="!loading">Stop load</button>
+
+    <h2>Fetched names</h2>
+    <ul>
+      <li ng-repeat="name in names">{{ name }}</li>
+    </ul>
+  </div>
+
+  <script id="app">
+    angular.module('demo')
+      .config(function (httpEstimateProvider) {
+        httpEstimateProvider.set({
+          interceptHttp: false,
+          accuracy: function (name, estimated, measured) {
+            console.log('loading', name, 'estimated', estimated, 'measured', measured);
+          }
+        });
+      })
+      .controller('demoController', function ($scope, $http, $timeout, httpEstimateLowLevel) {
+        $scope.names = [];
+        $scope.startLoad = function startLoad() {
+          console.log('manual start load');
+          $scope.loading = true;
+          $scope.names = [];
+          httpEstimateLowLevel.start('demo-request');
+        };
+
+        $scope.stopLoad = function stopLoad() {
+          console.log('manual stop load');
+          $scope.loading = false;
+          $scope.names = ['foo', 'bar', 'baz'];
+          httpEstimateLowLevel.stop('demo-request');
+        };
+      });
+  </script>
+
+  <script src="https://rawgit.com/bahmutov/console-log-div/master/console-log-div.js"></script>
+</body>
+</html>
