@@ -13,7 +13,7 @@
 
     npm|bower install ng-http-estimate
 
-Include 'ng-http-estimate.js' script in your page and add dependency on 'http-estimate'
+Include 'dist/ng-http-estimate.js' script in your page and add dependency on 'http-estimate'
 
     angular.module('app', ['http-estimate']);
 
@@ -25,7 +25,8 @@ Place the loading element into the body, you can also style it
     </body>
 
 The element will appear automatically on HTML requests and will show estimated remaining
-time (if previously computed) or "loading ..." message.
+time (if previously computed) or "loading ..." message. Optionally, include 'dist/ng-http-estimate.css'
+file to get the default centered style.
 
 ![screenshot](screenshot.png)
 

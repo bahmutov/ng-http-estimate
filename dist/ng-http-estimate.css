@@ -1,0 +1,20 @@
+/* default style for the estimate loader -
+  centered above the page */
+#http-estimate {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 30px;
+  line-height: 30px;
+  margin: -15px 0 0 -100px;
+  border: 2px solid black;
+  border-radius: 4px;
+  text-align: center;
+  background: white;
+  box-shadow: 8px 15px rgba(25, 25, 25, 0.5);
+}
+.overdue {
+  color: red;
+  font-weight: bold;
+}
